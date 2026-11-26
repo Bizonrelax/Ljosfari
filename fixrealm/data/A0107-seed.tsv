@@ -1,0 +1,8 @@
+probe	n	k	solutions_sorted	count	cost_ops
+descent	3	1	[(1, 2, 3)]	1	3600
+descent	3	2	[(1, 1, 2)]	1	7200
+descent	3	3	[(1, 1, 1)]	1	10800
+descent	3	4	[]	0	14400
+descent	3	5	[]	0	18000
+descent	3	6	[]	0	21600
+# planned WRK test n=4 via double descent d=(a+b+c)/(kab+ kac + kbc -1), a,b,c<=25,k<=5: ~1.6e5 ops, under 1e5? no -> reduce to a,b,c<=15: 3.4e3
