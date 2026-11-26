@@ -1,0 +1,7 @@
+probe	n	k	solutions_sorted	count	cost_ops
+descent	3	1	[(1, 2, 3)]	1	3720
+descent	3	2	[(1, 1, 2)]	1	3720
+descent	3	3	[(1, 1, 1)]	1	3720
+descent	3	4	[]	0	3720
+descent	3	5	[]	0	3720
+descent	3	6	[]	0	3720
