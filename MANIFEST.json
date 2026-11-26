@@ -2,9 +2,9 @@
  "protocol": "QWR",
  "version": "1.0",
  "composite": "QWR:ALV-1.0_PPV-1.0_TAV-1.0",
- "build": 8,
+ "build": 17,
  "estimator": "qwr-bytes/1",
- "built_at": "2026-11-26T01:15:31Z",
+ "built_at": "2026-11-26T02:41:41Z",
  "scope": [
   "README.md",
   "SELFTEST.md",
@@ -31,29 +31,29 @@
  },
  "files": {
   "README.md": {
-   "sha256": "e556a51c2d90dc6fa417ab7890df48721792373af9d5c7d27e7ad33839a483fb",
-   "bytes": 8811,
-   "tokens_est": 2241
+   "sha256": "0b9311170f484cfc9e2ca7c295c9e3c4919561c1774b3848d9fa64afee7788fa",
+   "bytes": 14252,
+   "tokens_est": 3606
   },
   "SELFTEST.md": {
-   "sha256": "a2b758c1ae6793c4e72de1728f69fe53206114269db6749361867cdb173d92fb",
-   "bytes": 6442,
-   "tokens_est": 1557
+   "sha256": "4bdf3fe2995bd6ac824d3a156e21c7dafa6d384454f6f8a986f371c6d04333b3",
+   "bytes": 8131,
+   "tokens_est": 1961
   },
   "qwr/GUIDE.md": {
-   "sha256": "5f77934bf82fa00118bb0b0a992e1d45111b363dd47485da5bcfb6b9f7e6ec06",
-   "bytes": 21501,
-   "tokens_est": 5083
+   "sha256": "dd5f67ee0ee604dac9beb5ec6c38f1b2c0dd4a8c26a097277c34bc5eddeeffe6",
+   "bytes": 29281,
+   "tokens_est": 6912
   },
   "qwr/bot/GATE.txt": {
-   "sha256": "04ec4c2dd09676cc6a1eea1355588fb93195247a4913897f8a35cda7a91bfbf7",
-   "bytes": 10726,
-   "tokens_est": 2548
+   "sha256": "75588fda490fe207c25f16a49daee2ff7c05705deabc020a3e0fe5ac1c3d92a0",
+   "bytes": 12139,
+   "tokens_est": 2883
   },
   "qwr/bot/bin/qwr.py": {
-   "sha256": "3012c0caf9a4c8cea7415fe4f1429d379cc2bc2daf810783c775686b32efd0af",
-   "bytes": 36159,
-   "tokens_est": 9866
+   "sha256": "aed6f6d7c475c1d2a7bdc6d016d8b9d6171cbf98855e4ff52f26b986757c889f",
+   "bytes": 42774,
+   "tokens_est": 11627
   },
   "qwr/bot/dict/common.kv": {
    "sha256": "fc08bea1350837c99e9b9b7c5f33804d2bca3ce373cff3d3408f23d6ff2fb754",
@@ -66,9 +66,9 @@
    "tokens_est": 417
   },
   "qwr/bot/dict/role.kv": {
-   "sha256": "36c9209e65ded619439019ee57cfeacefd80bfb60e837ba8f6c507c54444b2ee",
-   "bytes": 1404,
-   "tokens_est": 329
+   "sha256": "d807d8278bb565eae10bd6e87ada024d6ce7392462079049be0b5615646c3e93",
+   "bytes": 1997,
+   "tokens_est": 468
   },
   "qwr/bot/dict/subject.kv": {
    "sha256": "3429ab5f6f3364f15ab0c0fd7ff45a27a190cb1b0229133d300061a023d5ed37",
@@ -76,9 +76,9 @@
    "tokens_est": 155
   },
   "qwr/bot/mod/econ.txt": {
-   "sha256": "82fa629aa8b8c841eb7bc5d6c427311c23ad05a131744cfa1d845063d0acd5ad",
-   "bytes": 2016,
-   "tokens_est": 481
+   "sha256": "dbb978fc0a74e078048391610a34ac485b43790d5889e42a83954b0b691942da",
+   "bytes": 1860,
+   "tokens_est": 443
   },
   "qwr/bot/mod/fix.txt": {
    "sha256": "3d5a174b3a03970f5f0c2e6eedade6e21e8c191842458b119aa93fcf005b3aac",
@@ -91,14 +91,14 @@
    "tokens_est": 208
   },
   "qwr/bot/mod/lever.txt": {
-   "sha256": "57a7594ccd3438ddd9cd283704652c36a65fc3d7a62c8ed3d8ae9039f41b8397",
-   "bytes": 2011,
-   "tokens_est": 473
+   "sha256": "a3e5ea0fa681db269079b07fc466d5660a80bb92c8c844d89781cba6a0a62f03",
+   "bytes": 2839,
+   "tokens_est": 667
   },
   "qwr/bot/mod/life.txt": {
-   "sha256": "2b4518dc0cd82d67109b2b1d1cc34c6fa344b2a564b440edb9877fc32890559f",
-   "bytes": 2778,
-   "tokens_est": 655
+   "sha256": "8279ead47b59942a66ca8b1238695c6187427269a5a3ac9c22f7e4f03041f84d",
+   "bytes": 3496,
+   "tokens_est": 825
   },
   "qwr/bot/mod/lock.txt": {
    "sha256": "e2c07853768ef67d30bde1ec7670b0cb3af1d71444421b33214f4e0939c1820b",
@@ -106,54 +106,74 @@
    "tokens_est": 514
   },
   "qwr/bot/mod/needs.txt": {
-   "sha256": "410ee299a3332617951b4c562a0aa56697d5135faab58898acaeece62ecb6eed",
-   "bytes": 886,
-   "tokens_est": 219
+   "sha256": "aa0346fbf4f6f0c79568b4198ff6db875e3439c9d3a52d1b29155ff7ab6d394c",
+   "bytes": 1032,
+   "tokens_est": 259
+  },
+  "qwr/bot/mod/push.txt": {
+   "sha256": "a0be7cf71d857ac52b609838f1011efbad620c863b8da3245e7e65032c80e9fa",
+   "bytes": 2784,
+   "tokens_est": 654
   },
   "qwr/bot/mod/report.txt": {
-   "sha256": "e4577fe54217124c2409b2eb7b8ee6fdae9838e613af02ec9a31cdd7f97a0a7e",
-   "bytes": 1747,
-   "tokens_est": 410
+   "sha256": "eb1f9c1b6ba479e9fa6cb0489eb407afbd2d905fa81aa4481026216adf02d538",
+   "bytes": 2265,
+   "tokens_est": 531
   },
   "qwr/bot/mod/state.txt": {
-   "sha256": "b2afe6c66748c93c93acda67c23416452df8fda17a98a1e36e7f6598e72dedc8",
-   "bytes": 2170,
-   "tokens_est": 519
+   "sha256": "51907da2d7ef46a1519c948526193f0c02ffb33fdf5a11a597c43da6cb8afd9c",
+   "bytes": 2623,
+   "tokens_est": 631
   },
   "qwr/bot/mod/tang.txt": {
    "sha256": "d5f282192ad15c72ceb36437cf5643961bdb43dd146e4e44eb88e72f8fca3dd0",
    "bytes": 3005,
    "tokens_est": 700
   },
+  "qwr/bot/roles/AUD.txt": {
+   "sha256": "de0879c25c1ce0311d56c81766d4ea0692bdf268409e5253df491bcfeef6da70",
+   "bytes": 2739,
+   "tokens_est": 669
+  },
   "qwr/bot/roles/CHK.txt": {
-   "sha256": "e69858a45562e659e2182fde1583b459a429c784d313089d75a0835a275d99a7",
-   "bytes": 3514,
-   "tokens_est": 849
+   "sha256": "1dc438e4e5c47940047cc41c45fe7d39b7aaf5b9db3be6b39b7d7246122e5601",
+   "bytes": 3519,
+   "tokens_est": 851
   },
   "qwr/bot/roles/EDT.txt": {
-   "sha256": "c91c9389f5a43788e25b374dbbfdb1e35ecb152f1e91f749bbcad2c2ea17bff9",
-   "bytes": 2517,
-   "tokens_est": 610
+   "sha256": "8b098b48e3e730f60e1fc92b4f9ea3b3448abbcbfb5b4c44a4f24245da5ba3df",
+   "bytes": 2522,
+   "tokens_est": 611
   },
   "qwr/bot/roles/EUR.txt": {
-   "sha256": "edf59f7a6ad4c0e61ad650d2359f53583886c6bd7d18159c8d489ba3019d18d0",
-   "bytes": 3982,
-   "tokens_est": 956
+   "sha256": "c8c0287488b5e03d26f0085c63c451d3548f8ec9b991a78689bcbd41bc51537f",
+   "bytes": 3987,
+   "tokens_est": 957
+  },
+  "qwr/bot/roles/IDE.txt": {
+   "sha256": "1b4850ba37e90888e57de4e77f95a797317a837c88ef76277c4207fa21877f7e",
+   "bytes": 4075,
+   "tokens_est": 985
   },
   "qwr/bot/roles/LIT.txt": {
-   "sha256": "1c2ed9197ef60abf55f66debc2c5a0d9343d42a9390b6c8232dde10b8cad0ddf",
-   "bytes": 3049,
-   "tokens_est": 740
+   "sha256": "5959bab78d3b00b810949b3763d3cee16dc14237b0c01a3a8b3388608f336c9c",
+   "bytes": 3054,
+   "tokens_est": 742
   },
   "qwr/bot/roles/PLN.txt": {
-   "sha256": "fef4330e99212d5bb1fa06472131622496300ecb037fe70684ea37e1daceb9e7",
-   "bytes": 4441,
-   "tokens_est": 1066
+   "sha256": "df907534bb6ed55deb9e0405486f7f20d603f373498cc5b2ec596821feeaf408",
+   "bytes": 4794,
+   "tokens_est": 1148
+  },
+  "qwr/bot/roles/SYN.txt": {
+   "sha256": "e94ccb400bed31e07422e0bd8a7404cffe24fc719b6c873637e9ba78d16d91a8",
+   "bytes": 2844,
+   "tokens_est": 691
   },
   "qwr/bot/roles/WRK.txt": {
-   "sha256": "a8bc065c4c37c093c46685d706954ce5f2ef75e5950293ef52d95045fead166d",
-   "bytes": 4309,
-   "tokens_est": 1031
+   "sha256": "68ed3f054e7fb153a07dd7e27334c47928bb619007eec9e0bb951d7da8876cde",
+   "bytes": 4902,
+   "tokens_est": 1171
   }
  }
 }

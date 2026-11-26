@@ -296,9 +296,19 @@ def cmd_slice(a):
     ready = [t["id"] for t in tasks if t.get("status") == "ready"]
     park = {b: v["reason"] for b, v in park_state().items() if v["status"] == "park"}
     open_q = sum(1 for t in tasks if t.get("status") in ("ready","open","blk"))
+    cards_n = len(idx)
+    drift = 0
+    for i, c in idx.items():
+        cp = os.path.join(ROOT, c[5]) if len(c) > 5 and c[5] else None
+        if cp and os.path.isfile(cp):
+            txt = read(cp)
+            mt = re.search(r"истина:\s*(\w+)", txt); mn = re.search(r"новизна:\s*(\w+)", txt)
+            if (mt and mt.group(1) != c[1]) or (mn and mn.group(1) != c[2]): drift += 1
+    idle = (len(ready) == 0 and open_q == 0 and debt_chk == 0 and len(live) == 0)
     sl = {"ver": composite_ver(), "at": now(), "agents": len(live), "roles": roles,
           "debt_chk": debt_chk, "khi": khi, "nov_unc": nov_unc, "open_q": open_q,
-          "ready": ready[:20], "ready_n": len(ready), "park": park}
+          "ready": ready[:20], "ready_n": len(ready), "park": park,
+          "cards_n": cards_n, "drift": drift, "idle": idle}
     text = json.dumps(sl, ensure_ascii=False)
     if est_text(text) > LIMITS["slice"]:
         sl["ready"] = ready[:5]; sl["_narrowed"] = True
@@ -473,13 +483,21 @@ def cmd_index(a):
     if a.sub == "md":
         rows = index_rows()
         lines = ["# INDEX — человеческий вид указателя утверждений", "",
-                 "Генерируется из INDEX.tsv инструментом qwr.py index md. Руками не править.", "",
-                 "| id | истина | новизна | формулировка | метод | польза | карточка |",
-                 "| --- | --- | --- | --- | --- | --- | --- |"]
+                 "Генерируется из INDEX.tsv инструментом qwr.py index md. Руками не править.",
+                 "Номер и карточка — гиперссылки: прочёл, тыкнул, перелетел.", "",
+                 "| id | истина | новизна | формулировка | метод | польза | карточка | данные |",
+                 "| --- | --- | --- | --- | --- | --- | --- | --- |"]
+        def relfix(p):
+            if not p: return ""
+            return p[len("fixrealm/"):] if p.startswith("fixrealm/") else p
         for i in sorted(rows):
             c = rows[i]
             get = lambda k: c[k] if len(c) > k else ""
-            lines.append(f"| {get(0)} | {get(1)} | {get(2)} | {get(3)} | {get(4)} | {get(8)} | {get(5)} |")
+            cardrel = relfix(get(5)); datarel = relfix(get(6))
+            idcell = f"[{get(0)}]({cardrel})" if cardrel else get(0)
+            cardcell = f"[открыть]({cardrel})" if cardrel else "—"
+            datacell = f"[данные]({datarel})" if datarel else "—"
+            lines.append(f"| {idcell} | {get(1)} | {get(2)} | {get(3)} | {get(4)} | {get(8)} | {cardcell} | {datacell} |")
         write(os.path.join(FIX, "INDEX.md"), "\n".join(lines) + "\n")
         print(f"200 INDEX.md строк={len(rows)}"); return 0
     if a.sub == "check":
@@ -565,8 +583,15 @@ def cmd_lever(a):
     if not line.startswith("РЫЧАГ"): print("1 нет слова РЫЧАГ, это не приказ"); return 1
     body = line.split(":",1)[1].strip() if ":" in line else line[len("РЫЧАГ"):].strip()
     parts = body.split(); cmd = parts[0].upper() if parts else ""
-    if cmd in ("ОТЧЁТ","ОТЧЕТ","СТАТУС"):
+    if cmd in ("ОТЧЁТ","ОТЧЕТ","СТАТУС","ОБЗОР"):
         return cmd_slice(a)
+    if cmd == "РАСЧИСТИ":
+        n = 0
+        for m in read_locks():
+            if not lock_live(m):
+                append(os.path.join(BOT,"a2a","inbox.jsonl"), json.dumps({"from":"system","to":m.get("owner",""),"kind":"stale_release","text":f"замок снят рычагом РАСЧИСТИ","at":now()}, ensure_ascii=False)+"\n")
+                os.remove(os.path.join(locks_dir(), m["_file"])); n += 1
+        print(f"200 снято брошенных замков: {n}"); return 0
     if cmd == "ПОТОЛОК":
         print(json.dumps(LIMITS, ensure_ascii=False)); return 0
     if cmd == "РАЗМОРОЗЬ":
@@ -578,6 +603,9 @@ def cmd_lever(a):
         print(read(tp) if os.path.isfile(tp) else "TERMS.md нет"); return 0
     if cmd == "ПРОТОКОЛ":
         print("HUMAN-ONLY: правка протокола ролью EDT по рычагу; захватите EDT, правьте, пересоберите манифест"); return 0
+    if cmd == "ПУБЛИКУЙ":
+        a.state="ЗЕЛЕНО"; a.verdict="ПУБЛИКОВАТЬ"; a.api="local"; a.repo=None; a.message=None
+        return cmd_publish(a)
     print(f"1 неизвестный рычаг {cmd}"); return 1
 
 # ---------- doctor ----------
@@ -590,7 +618,7 @@ def cmd_doctor(a):
     modtot = sum(est_file(os.path.join(BOT,"mod",f)) for f in os.listdir(os.path.join(BOT,"mod")) if f.endswith(".txt"))
     ck("needs сумма<=6000", modtot <= 6000, str(modtot))
     gate = est_file(os.path.join(BOT,"GATE.txt"))
-    for r in ["PLN","WRK","EUR","CHK","LIT","EDT"]:
+    for r in ["PLN","WRK","EUR","CHK","LIT","IDE","SYN","AUD","EDT"]:
         c = card_text(r)
         ck(f"карточка {r}<=800", c is not None and est_text(c) <= 800)
         ck(f"роль {r}<=2500", est_file(os.path.join(BOT,"roles",r+".txt")) <= 2500)
@@ -652,6 +680,10 @@ def cmd_selftest(a):
     run("manifest")
     rc, out = run("claim","--role","PLN","--owner","agentA","--api","local"); ck("захват 201", rc==0 and "201" in out, out)
     rc, out = run("claim","--role","PLN","--owner","agentB","--api","local"); ck("второй 422", rc==1 and "422" in out, out)
+    rc, out = run("card","--role","IDE"); ck("карточка IDE", rc==0, "")
+    rc, out = run("claim","--role","IDE","--owner","agentC","--api","local"); ck("захват IDE 201", rc==0 and "201" in out, out)
+    run("release","--role","IDE","--owner","agentC")
+    rc, out = run("slice"); ck("срез имеет idle и cards_n", rc==0 and '"idle"' in out and '"cards_n"' in out, "")
     rc, out = run("task","new","--id","T9001","--role","PLN","--owner","agentA","--block","A9001-A9010","--cost","1e40","--artifact","x","--accept","y","--question","z")
     ck("1e40 отклонена", rc==1 and "декомпозиция" in out, out)
     rc, out = run("task","new","--id","T9002","--role","PLN","--owner","agentA","--block","A9001-A9010","--cost","1e6","--artifact","таблица","--accept","граница","--question","малый случай")
@@ -665,12 +697,68 @@ def cmd_selftest(a):
     ck("отчёт<=30 и расход", rc==0 and "расход токенов" in out and "(оценка)" in out, "")
     rc, out = run("lever","--line","РЫЧАГ: СТАТУС"); ck("рычаг статус", rc==0 and "debt_chk" in out, "")
     rc, out = run("lever","--line","просто продолжай"); ck("без РЫЧАГ не приказ", rc==1, out)
+    rc, out = run("publish","--state","КРАСНО","--verdict","ПУБЛИКОВАТЬ"); ck("красное не пушится", rc==1, out)
+    rc, out = run("publish","--state","ЗЕЛЕНО","--verdict","НЕ ПУБЛИКОВАТЬ"); ck("не публиковать не пушится", rc==1, out)
+    rc, out = run("publish","--state","ЗЕЛЕНО","--verdict","ПУБЛИКОВАТЬ","--api","local"); ck("зелёное пушится и СТОП", rc==0 and "СТОП" in out, out)
+    rc, out = run("lever","--line","РЫЧАГ: ПУБЛИКУЙ"); ck("рычаг ПУБЛИКУЙ", rc==0 and "СТОП" in out, out)
+    run("index","append","--row","A9001\tprf\tunc\tтест\tметод\tfixrealm/cards/A9001.md\tfixrealm/data/A9001.tsv\t\tactive\tv\tat\tbot")
+    run("index","md")
+    idxmd = open(os.path.join(dst,"fixrealm","INDEX.md"),encoding="utf-8").read()
+    ck("INDEX.md гиперссылки на карточки", "](cards/A9001.md)" in idxmd, "")
+    rc, out = run("prior","--query","тест"); ck("prior находит прежние результаты", rc==0 and "A9001" in out, out)
     shutil.rmtree(tmp, ignore_errors=True)
     allok = True
     for name, ok, detail in results:
         print(f"{'PASS' if ok else 'FAIL'}\t{name}\t{detail}"); allok = allok and ok
     print("SELFTEST " + ("OK" if allok else "FAIL"))
     return 0 if allok else 1
+
+# ---------- publish ----------
+def cmd_publish(a):
+    if (a.state or "") != "ЗЕЛЕНО" or (a.verdict or "") != "ПУБЛИКОВАТЬ":
+        print("ОТКАЗ: пуш только при СОСТОЯНИЕ ЗЕЛЕНО и ВЕРДИКТ ПУБЛИКОВАТЬ"); return 1
+    if cmd_manifest(argparse.Namespace(check=True)) != 0:
+        print("ОТКАЗ: манифест не сошёлся, записей не делать"); return 1
+    if a.api == "github":
+        tok = os.environ.get("QWR_TOKEN"); repo = a.repo or os.environ.get("QWR_REPO")
+        if not tok or not repo: print("ОТКАЗ: нет QWR_TOKEN или репозитория"); return 1
+        auth = "Authorization: Basic " + base64.b64encode(f"x-access-token:{tok}".encode()).decode()
+        def git(*args):
+            return subprocess.run(["git","-c",f"http.extraheader={auth}",*args], cwd=ROOT, capture_output=True, text=True)
+        git("add","-A")
+        if git("status","--porcelain").stdout.strip():
+            git("-c","user.name=qwr-bot","-c","user.email=bot@qwr.local","commit","-m", a.message or "этап QWR: фиксация и публикация")
+        r = git("push","origin","main")
+        if r.returncode != 0:
+            print("ОТКАЗ: пуш не удался: " + r.stderr.strip()[:120]); return 1
+        print("PUSH OK — СТОП: исследование в этом сообщении завершено, следующее только в новом сообщении или чате"); return 0
+    print("PUSH OK (local) — СТОП: исследование в этом сообщении завершено"); return 0
+
+# ---------- reuse: prior / card-get ----------
+def cmd_prior(a):
+    rows = index_rows()
+    q = (a.query or "").lower()
+    matches = []
+    for i, c in rows.items():
+        title = c[3] if len(c) > 3 else ""; method = c[4] if len(c) > 4 else ""
+        if not q or q in title.lower() or q in method.lower() or q in i.lower():
+            matches.append(c)
+    if not q: matches = list(rows.values())[-10:]
+    lines = []
+    for c in matches[:20]:
+        get = lambda k: c[k] if len(c) > k else ""
+        lines.append(f'{get(0)}\t{get(1)}\t{get(2)}\t{get(3)}\tпольза:{get(8)}\t{get(5)}')
+    text = "\n".join(lines) if lines else "нет прежних результатов по запросу"
+    if est_text(text) > 800:
+        text = "\n".join(lines[:8]) + "\n…сужай запрос"
+    print(text); return 0
+
+def cmd_cardget(a):
+    p = os.path.join(FIX, "cards", a.id + ".md")
+    if not os.path.isfile(p): print("нет карточки " + a.id); return 1
+    txt = read(p)
+    if est_text(txt) > 2000: txt = txt[:6000] + "\n…усечено, сужай запрос"
+    print(txt); return 0
 
 def main():
     ap = argparse.ArgumentParser(prog="qwr.py", description="инструменты протокола QWR v1.0")
@@ -704,8 +792,12 @@ def main():
     rp.add_argument("--read", nargs="*"); rp.add_argument("--exact"); rp.add_argument("--note")
     rp.add_argument("--state"); rp.add_argument("--verdict"); rp.add_argument("--reason")
     lv = sub.add_parser("lever"); lv.add_argument("--line", required=True)
+    pb = sub.add_parser("publish"); pb.add_argument("--state", default="ЗЕЛЕНО"); pb.add_argument("--verdict", default="ПУБЛИКОВАТЬ")
+    pb.add_argument("--api", choices=["local","github"], default="local"); pb.add_argument("--repo"); pb.add_argument("--message")
     sub.add_parser("doctor")
     sub.add_parser("selftest")
+    pr = sub.add_parser("prior"); pr.add_argument("--query", default="")
+    cg = sub.add_parser("card-get"); cg.add_argument("--id", required=True)
     a = ap.parse_args()
     global ROOT, BOT, FIX
     if a.root:
@@ -714,7 +806,7 @@ def main():
     fn = {"manifest":cmd_manifest,"tokens":cmd_tokens,"dict":cmd_dict,"card":cmd_card,"need":cmd_need,
           "slice":cmd_slice,"claim":cmd_claim,"release":cmd_release,"guard":cmd_guard,"task":cmd_task,
           "index":cmd_index,"journal":cmd_journal,"birth":cmd_birth,"inbox":cmd_inbox,"park":cmd_park,
-          "report":cmd_report,"lever":cmd_lever,"doctor":cmd_doctor,"selftest":cmd_selftest}[a.cmd]
+          "report":cmd_report,"lever":cmd_lever,"publish":cmd_publish,"prior":cmd_prior,"card-get":cmd_cardget,"doctor":cmd_doctor,"selftest":cmd_selftest}[a.cmd]
     sys.exit(fn(a))
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ CARD:BEGIN
 role=EDT
 mission=правка протокола и пересборка манифеста; не исследует и не пишет результаты
 claim=qwr/bot/a2a/locks/EDT.json
-needs=lock,report
+needs=lock,report,push
 lazy=lever,econ
 dicts=c,g,r
 write=qwr/bot/GATE.txt,qwr/bot/roles/*,qwr/bot/mod/*,qwr/bot/dict/*,qwr/bot/bin/*,MANIFEST.json,README.md,SELFTEST.md,qwr/GUIDE.md
