@@ -4,3 +4,4 @@ A9006	hyp	unc	Любой замок старше 60 минут брошен	ин
 A9001	prf	unc	Атомарный захват даёт ровно один успех	O_EXCL+CHK	fixrealm/cards/A9001.md	fixrealm/data/V9001.md	A9006	active	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5	2026-11-26T01:13:13Z	dryrun-chk
 A9006	ref	unc	Любой замок старше 60 минут брошен	контрпример	fixrealm/cards/A9006.md	fixrealm/data/A9006-counter.tsv	A9001	latent	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5	2026-11-26T01:13:14Z	dryrun-chk
 A9001	prf	knw	Атомарный захват даёт ровно один успех	O_EXCL+CHK	fixrealm/cards/A9001.md	fixrealm/data/L9001.md	A9006	active	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5	2026-11-26T01:13:14Z	dryrun-lit
+A0101	opn	unc	Замок брошен тогда и только тогда, когда возраст больше 60 минут и след старше 60 минут	редукция контрпримера A9006			A9006	active	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b8	2026-11-26T02:05:00Z	qwen-agent
