@@ -1,12 +1,12 @@
 MOD needs — карта обязательных модулей роли. Грузить только перечисленные в карточке needs.
-PLN: state lock tang life fix report push
-WRK: state lock tang life fix report push
-EUR: state lock tang life fix report push
-CHK: state lock tang life fix report push
-LIT: state lock life fix report push
-IDE: state lock tang life fix report push
-SYN: state lock life fix report push
-AUD: state lock life fix report push
+PLN: state lock tang life fix report push check
+WRK: state lock tang life fix report push check
+EUR: state lock tang life fix report push check
+CHK: state lock tang life fix report push check
+LIT: state lock life fix report push check
+IDE: state lock tang life fix report push check
+SYN: state lock life fix report push check
+AUD: state lock life fix report push check
 EDT: lock report push
 Правило: модуль из needs отсутствует — освободить захват, отчёт, выход; догадками не заменять.
 lazy грузится по факту, не на входе: lever при рычаге; econ при сжатии, учёте расхода, превышении бюджета; tang для LIT только при пересчёте.

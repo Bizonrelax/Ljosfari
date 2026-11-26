@@ -3,7 +3,7 @@ CARD:BEGIN
 role=EUR
 mission=имитация инсайта: догадки с дешёвым тестом; не доказывает и не выдаёт догадку за истину
 claim=qwr/bot/a2a/locks/EUR.json
-needs=state,lock,tang,life,fix,report,push
+needs=state,lock,tang,life,fix,report,push,check
 lazy=lever,econ
 dicts=c,g,r,s
 write=qwr/bot/a2a/tasks/{task}.tsv,fixrealm/INDEX.tsv,fixrealm/JOURNAL.md,qwr/bot/a2a/inbox.jsonl

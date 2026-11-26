@@ -701,6 +701,13 @@ def cmd_selftest(a):
     rc, out = run("publish","--state","ЗЕЛЕНО","--verdict","НЕ ПУБЛИКОВАТЬ"); ck("не публиковать не пушится", rc==1, out)
     rc, out = run("publish","--state","ЗЕЛЕНО","--verdict","ПУБЛИКОВАТЬ","--api","local"); ck("зелёное пушится и СТОП", rc==0 and "СТОП" in out, out)
     rc, out = run("lever","--line","РЫЧАГ: ПУБЛИКУЙ"); ck("рычаг ПУБЛИКУЙ", rc==0 and "СТОП" in out, out)
+    open(os.path.join(dst,"fixrealm","data","chk.tsv"),"w").write("x\n2\n-3\n")
+    rc, out = run("precheck","--data","fixrealm/data/chk.tsv","--predicate","x>0"); ck("precheck ловит нарушение на сохранённых данных", rc==1 and "нарушено 1" in out, out)
+    rc, out = run("precheck","--data","fixrealm/data/chk.tsv","--predicate","abs(x)>=2"); ck("precheck проходит истинное", rc==0, out)
+    rc, out = run("lint"); ck("lint чистой песочницы", rc==0, out)
+    open(os.path.join(dst,"fixrealm","cards","A9099.md"),"w").write("# A9099\nистина: hyp\nновизна: unc\nпольза: x\nверсия: QWR:test\nформула %s4\n")
+    rc, out = run("lint"); ck("lint ловит плейсхолдер и сироту", rc==1 and "плейсхолдер" in out, out)
+    os.remove(os.path.join(dst,"fixrealm","cards","A9099.md"))
     run("index","append","--row","A9001\tprf\tunc\tтест\tметод\tfixrealm/cards/A9001.md\tfixrealm/data/A9001.tsv\t\tactive\tv\tat\tbot")
     run("index","md")
     idxmd = open(os.path.join(dst,"fixrealm","INDEX.md"),encoding="utf-8").read()
@@ -719,6 +726,8 @@ def cmd_publish(a):
         print("ОТКАЗ: пуш только при СОСТОЯНИЕ ЗЕЛЕНО и ВЕРДИКТ ПУБЛИКОВАТЬ"); return 1
     if cmd_manifest(argparse.Namespace(check=True)) != 0:
         print("ОТКАЗ: манифест не сошёлся, записей не делать"); return 1
+    if cmd_lint(argparse.Namespace()) != 0:
+        print("ОТКАЗ: lint дефекты, не публиковать, править"); return 1
     if a.api == "github":
         tok = os.environ.get("QWR_TOKEN"); repo = a.repo or os.environ.get("QWR_REPO")
         if not tok or not repo: print("ОТКАЗ: нет QWR_TOKEN или репозитория"); return 1
@@ -760,6 +769,82 @@ def cmd_cardget(a):
     if est_text(txt) > 2000: txt = txt[:6000] + "\n…усечено, сужай запрос"
     print(txt); return 0
 
+# ---------- check gate: precheck / lint ----------
+def cmd_precheck(a):
+    p = a.data if os.path.isabs(a.data) else os.path.join(ROOT, a.data)
+    if not os.path.isfile(p): print("нет data " + a.data); return 2
+    lines = [l for l in read(p).splitlines() if l.strip()]
+    if not lines: print("data пуст"); return 2
+    header = lines[0].split("\t")
+    rows = lines[1:] if a.header else lines
+    import math
+    ns = {"__builtins__": {}, "abs": abs, "min": min, "max": max, "sum": sum, "len": len, "math": math, "prod": math.prod}
+    passed = failed = errors = 0; fails = []
+    for ln in rows:
+        cells = ln.split("\t")
+        if a.header:
+            row = {header[i]: cells[i] for i in range(min(len(header), len(cells)))}
+        else:
+            row = {f"c{i}": cells[i] for i in range(len(cells))}
+        for k, v in list(row.items()):
+            try: row[k] = int(v)
+            except Exception:
+                try: row[k] = float(v)
+                except Exception: pass
+        try:
+            if eval(a.predicate, ns, row): passed += 1
+            else: failed += 1; fails.append(ln)
+        except Exception as e:
+            errors += 1; fails.append(ln + " (" + str(e) + ")")
+    print(f"precheck: пройдено {passed}, нарушено {failed}, ошибок {errors}, всего {len(rows)}")
+    if fails:
+        print("нарушения (первые 5):")
+        for f in fails[:5]: print("  " + f)
+    return 0 if failed == 0 and errors == 0 else 1
+
+def cmd_lint(a):
+    defects = []
+    rows = index_rows()
+    ip = os.path.join(FIX, "INDEX.tsv")
+    if os.path.isfile(ip):
+        for line in read(ip).splitlines()[1:]:
+            if not line.strip(): continue
+            c = line.split("\t")
+            if len(c) != 12: defects.append(f"колонки {len(c)}!=12: {c[0] if c else '?'}")
+    cards_dir = os.path.join(FIX, "cards"); bodies = {}; cardids = set()
+    if os.path.isdir(cards_dir):
+        for f in sorted(os.listdir(cards_dir)):
+            if not f.endswith(".md"): continue
+            cid = f[:-3]; cardids.add(cid)
+            txt = read(os.path.join(cards_dir, f))
+            h = hashlib.sha256(txt.encode()).hexdigest()
+            if h in bodies: defects.append(f"дубль тела {cid}={bodies[h]}")
+            bodies[h] = cid
+            if re.search(r"%[cgrs]\d+", txt): defects.append(f"плейсхолдер кода в {cid}")
+            for field in ["истина:", "новизна:", "польза:"]:
+                if field not in txt: defects.append(f"нет поля {field} в {cid}")
+            mv = re.search(r"версия:\s*(\S+)", txt)
+            if mv and not mv.group(1).startswith("QWR:"): defects.append(f"штамп версии не QWR в {cid}")
+    for i, c in rows.items():
+        card = c[5] if len(c) > 5 else ""
+        if ";" in card: defects.append(f"склеенный путь карточки {i}")
+        cp = os.path.join(ROOT, card) if card else None
+        if not cp or not os.path.isfile(cp): defects.append(f"карточка не существует {i}: {card}")
+        data = c[6] if len(c) > 6 else ""
+        if data and not os.path.isfile(os.path.join(ROOT, data)): defects.append(f"data не существует {i}: {data}")
+        truth = c[1] if len(c) > 1 else ""
+        if truth in ("emp", "prf"):
+            has_data = bool(data) and os.path.isfile(os.path.join(ROOT, data))
+            has_proof = cp and os.path.isfile(cp) and "Доказательство" in read(cp)
+            if not has_data and not has_proof: defects.append(f"{truth} без data и доказательства {i}")
+    for cid in cardids:
+        if cid not in rows: defects.append(f"карточка без строки INDEX {cid}")
+    if defects:
+        print("LINT ДЕФЕКТЫ:")
+        for d in defects: print("  " + d)
+        return 1
+    print("LINT OK"); return 0
+
 def main():
     ap = argparse.ArgumentParser(prog="qwr.py", description="инструменты протокола QWR v1.0")
     ap.add_argument("--root", default=None)
@@ -798,6 +883,9 @@ def main():
     sub.add_parser("selftest")
     pr = sub.add_parser("prior"); pr.add_argument("--query", default="")
     cg = sub.add_parser("card-get"); cg.add_argument("--id", required=True)
+    pc = sub.add_parser("precheck"); pc.add_argument("--data", required=True); pc.add_argument("--predicate", required=True)
+    pc.add_argument("--no-header", dest="header", action="store_false", default=True)
+    sub.add_parser("lint")
     a = ap.parse_args()
     global ROOT, BOT, FIX
     if a.root:
@@ -806,7 +894,7 @@ def main():
     fn = {"manifest":cmd_manifest,"tokens":cmd_tokens,"dict":cmd_dict,"card":cmd_card,"need":cmd_need,
           "slice":cmd_slice,"claim":cmd_claim,"release":cmd_release,"guard":cmd_guard,"task":cmd_task,
           "index":cmd_index,"journal":cmd_journal,"birth":cmd_birth,"inbox":cmd_inbox,"park":cmd_park,
-          "report":cmd_report,"lever":cmd_lever,"publish":cmd_publish,"prior":cmd_prior,"card-get":cmd_cardget,"doctor":cmd_doctor,"selftest":cmd_selftest}[a.cmd]
+          "report":cmd_report,"lever":cmd_lever,"publish":cmd_publish,"prior":cmd_prior,"card-get":cmd_cardget,"precheck":cmd_precheck,"lint":cmd_lint,"doctor":cmd_doctor,"selftest":cmd_selftest}[a.cmd]
     sys.exit(fn(a))
 
 if __name__ == "__main__":

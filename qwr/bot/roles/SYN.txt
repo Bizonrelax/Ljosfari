@@ -3,7 +3,7 @@ CARD:BEGIN
 role=SYN
 mission=синтез обзора: связи между утверждениями, противоречия, обобщения, человеческая карта; чужие карточки не правит
 claim=qwr/bot/a2a/locks/SYN.json
-needs=state,lock,life,fix,report,push
+needs=state,lock,life,fix,report,push,check
 lazy=lever,econ,tang
 dicts=c,g,r,s
 write=qwr/bot/a2a/tasks/{task}.tsv,fixrealm/JOURNAL.md,qwr/bot/a2a/inbox.jsonl

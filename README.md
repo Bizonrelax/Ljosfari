@@ -50,6 +50,10 @@ Checks: `python3 qwr/bot/bin/qwr.py doctor` and `python3 qwr/bot/bin/qwr.py self
 
 Publishing is mandatory, not optional. When state is GREEN and verdict is PUBLISH, the stage is fixed in `fixrealm/`, the manifest matches, and quota/tools/calls are available, the bot must push itself to `main` (no branches, no force). Immediately after a successful push it STOPS: report and exit, no further research in the same message. The next research starts only in the next human message or a new chat. If quota or tooling for push is missing, the bot does not keep computing: it fixes the stage, leaves a pending trace, reports DO NOT PUBLISH with a reason, and exits. Red is never pushed. `qwr.py publish` enforces the condition; the lever `РЫЧАГ: ПУБЛИКУЙ` and a direct "publish" instruction trigger the same push-and-stop. `fixrealm/INDEX.md` has hyperlinks to cards and data: read, click, jump.
 
+## Pre-publish gate
+
+A mandatory cheap gate runs before a card is published, inline in the stage (not a separate task): any new formula/invariant/generalization is run against already-saved `data/*.tsv` rows via `qwr.py precheck`; a generalization transferred from a special case is rejected if it breaks on any saved solution, and the self-check is recorded in the card. `qwr.py lint` (and `publish`) enforce integrity: INDEX matches cards, links and data exist, 12 columns intact, no `%s` placeholders in human text, no duplicate bodies, single QWR version stamp. Results stay Markdown + TSV in the repo with generated INDEX; hand-carrying to Word/docx is forbidden because it makes `emp` unverifiable. Novelty is checked by LIT before big enumeration or range extension; extending a classic range without a new question is waste. Independent CHK by another agent for emp→prf is unchanged.
+
 ## Reuse: ladder and foundation
 
 Cards are steps of a ladder and bricks of a foundation for every later bot. Reuse is mandatory: before new computation a bot reads prior results selectively (`qwr.py prior --query`, `qwr.py card-get --id`), uses proven `prf` claims as lemmas without recomputing, does not repeat `ref` dead-ends without a new angle, extends `emp` ranges from the saved boundary, reuses `latent` utility, and records prior card numbers in the links field so the ladder is traceable. PLN never issues tasks redoing proven or refuted claims without a new question.
@@ -111,6 +115,10 @@ PLN планировщик (всегда один), WRK исполнитель, 
 ## Дисциплина пуша
 
 Публикация обязательна, а не по желанию. Если СОСТОЯНИЕ ЗЕЛЕНО и ВЕРДИКТ ПУБЛИКОВАТЬ, этап зафиксирован в `fixrealm/`, манифест сошёлся и есть квоты, инструменты и вызовы — бот обязан запушить сам в `main`, без веток и force. Сразу после успешного пуша — СТОП: отчёт и выход, без новых исследований в том же сообщении. Следующее исследование — только в следующем сообщении человека или новом чате. Нет квоты или инструмента на пуш — бот не считает дальше: фиксирует этап, оставляет pending, отчёт НЕ ПУБЛИКОВАТЬ с причиной, выход. Красное не пушится. `qwr.py publish` проверяет условие; рычаг `РЫЧАГ: ПУБЛИКУЙ` и прямое «публикуй» запускают тот же пуш-и-стоп. `fixrealm/INDEX.md` содержит гиперссылки на карточки и данные: прочёл, тыкнул, перелетел.
+
+## Гейт перед публикацией
+
+Обязательный дешёвый гейт до публикации карточки, встроенный в этап: любая новая формула, инвариант или обобщение прогоняется на сохранённых строках `data/*.tsv` через `qwr.py precheck`; обобщение с частного случая отклоняется, если ломается на сохранённом решении, самопроверка записывается в карточку. `qwr.py lint` и `publish` проверяют целостность: INDEX сходится с карточками, ссылки и data существуют, 12 колонок целы, плейсхолдеров `%s` в тексте нет, дублей нет, штамп версии един (QWR). Результаты — Markdown и TSV в репозитории, INDEX генерируется; ручной перенос в Word/docx запрещён, он делает emp непроверяемым. Новизну закрывает LIT до большого перебора; расширение диапазона классики без нового вопроса — работа впустую. Независимая проверка CHK другим агентом для emp→prf сохраняется.
 
 ## Повторное использование: лестница и фундамент
 

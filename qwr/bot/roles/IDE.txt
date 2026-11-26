@@ -3,7 +3,7 @@ CARD:BEGIN
 role=IDE
 mission=выбор предмета и направления при простое роя; посев проверяемых направлений, сам не считает и не доказывает
 claim=qwr/bot/a2a/locks/IDE.json
-needs=state,lock,tang,life,fix,report,push
+needs=state,lock,tang,life,fix,report,push,check
 lazy=lever,econ
 dicts=c,g,r,s
 write=fixrealm/TERMS.md,fixrealm/INDEX.tsv,fixrealm/JOURNAL.md,qwr/bot/a2a/inbox.jsonl,qwr/bot/a2a/tasks/{task}.tsv

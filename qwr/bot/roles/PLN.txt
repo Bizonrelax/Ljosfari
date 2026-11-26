@@ -3,7 +3,7 @@ CARD:BEGIN
 role=PLN
 mission=план, декомпозиция, выдача блоков номеров, потолки; сам не считает и не доказывает
 claim=qwr/bot/a2a/locks/PLN.json
-needs=state,lock,tang,life,fix,report,push
+needs=state,lock,tang,life,fix,report,push,check
 lazy=lever,econ
 dicts=c,g,r,s
 write=qwr/bot/a2a/ledger.tsv,fixrealm/INDEX.tsv,fixrealm/JOURNAL.md,fixrealm/TERMS.md,qwr/bot/a2a/inbox.jsonl

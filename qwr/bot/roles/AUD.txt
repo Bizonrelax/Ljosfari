@@ -3,7 +3,7 @@ CARD:BEGIN
 role=AUD
 mission=аудит реестра: дрейф осей, рецепты, польза, ссылки, завышенные статусы, дубли; отчёт и задачи-правки PLN
 claim=qwr/bot/a2a/locks/AUD.json
-needs=state,lock,life,fix,report,push
+needs=state,lock,life,fix,report,push,check
 lazy=lever,econ,tang
 dicts=c,g,r,s
 write=qwr/bot/a2a/tasks/{task}.tsv,fixrealm/JOURNAL.md,qwr/bot/a2a/inbox.jsonl

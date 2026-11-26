@@ -3,7 +3,7 @@ CARD:BEGIN
 role=LIT
 mission=проверка новизны: источники с датами; не выдаёт не найдено за открытие
 claim=qwr/bot/a2a/locks/LIT.json
-needs=state,lock,life,fix,report,push
+needs=state,lock,life,fix,report,push,check
 lazy=lever,econ,tang
 dicts=c,g,r,s
 write=qwr/bot/a2a/tasks/{task}.tsv,fixrealm/INDEX.tsv,fixrealm/JOURNAL.md,qwr/bot/a2a/inbox.jsonl
