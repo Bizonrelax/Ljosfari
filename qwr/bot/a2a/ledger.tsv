@@ -7,3 +7,7 @@ T9009	PLN	dryrun-pln	A9001-A9008	1e4	512	ревизия карточек	ready	Q
 T9005	PLN	dryrun-pln	A9020-A9022	1e6	512	артефакт этапа	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5	2026-11-26T01:13:12Z
 T9006	PLN	dryrun-pln	A9020-A9022	1e6	512	артефакт этапа	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5	2026-11-26T01:13:12Z
 T9007	PLN	dryrun-pln	A9020-A9022	1e6	512	артефакт этапа	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5	2026-11-26T01:13:12Z
+T0102	PLN	qwen-agent	A0110-A0111	2.2e4	16	data/A0110-table.tsv: таблица спуска n=3, k=1..6, B=60 со строками стоимости	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b17	2026-11-26T03:24:12Z
+T0103	PLN	qwen-agent	A0112-A0113	1.6e5	16	data/A0112-table.tsv: таблица двойного спуска n=4, k=1..5, a,b,c<=15	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b17	2026-11-26T03:24:19Z
+T0104	PLN	qwen-agent	A0114-A0115	9e5	16	data/A0114-table.tsv: таблица 4/n для нечётных n<=99, поиск спуском по x,y с границей Сильвестра	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b17	2026-11-26T03:24:19Z
+T0105	PLN	qwen-agent	A0106-A0108	1e3	8	data/L0106.md: заключение LIT с двумя названными источниками и датой проверки	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b17	2026-11-26T03:24:19Z
