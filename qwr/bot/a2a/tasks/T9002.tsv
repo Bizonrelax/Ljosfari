@@ -1,0 +1,3 @@
+{"id": "T9002", "role": "PLN", "owner": "dryrun-pln", "block": "A9001-A9005", "cost_ops": "2e6", "mem_mb": "64", "ceiling_ops": 10000000.0, "artifact": "таблица малого случая", "accept": "граница зафиксирована", "question": "малый случай атомарности", "branch": "B900", "ver": "QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5", "at": "2026-11-26T01:13:12Z"}
+2026-11-26T01:13:12Z	dryrun-pln	ready	создана
+2026-11-26T01:13:13Z	dryrun-wrk	done	shift:range

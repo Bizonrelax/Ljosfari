@@ -1,0 +1,10 @@
+MOD needs — карта обязательных модулей роли. Грузить только перечисленные в карточке needs.
+PLN: state lock tang life fix report
+WRK: state lock tang life fix report
+EUR: state lock tang life fix report
+CHK: state lock tang life fix report
+LIT: state lock life fix report
+EDT: lock report
+Правило: модуль из needs отсутствует — освободить захват, отчёт, выход; догадками не заменять.
+lazy грузится по факту, не на входе: lever при рычаге; econ при сжатии, учёте расхода, превышении бюджета; tang для LIT только при пересчёте.
+Сумма needs роли не более 6000 токенов. Превысил — сужай срез, не дочитывай.

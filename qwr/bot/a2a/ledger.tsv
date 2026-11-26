@@ -1,0 +1,9 @@
+task	role	owner	block	cost_ops	mem_mb	artifact	status	ver	at
+T9002	PLN	dryrun-pln	A9001-A9005	2e6	64	таблица малого случая	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5	2026-11-26T01:13:12Z
+T9003	PLN	dryrun-pln	A9006-A9008	1e5	32	карточка гипотезы	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5	2026-11-26T01:13:12Z
+T9004	PLN	dryrun-pln	A9001-A9005	1e5	512	заключение V9001	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5	2026-11-26T01:13:12Z
+T9008	PLN	dryrun-pln	A9006-A9008	1e5	512	заключение V9006	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5	2026-11-26T01:13:12Z
+T9009	PLN	dryrun-pln	A9001-A9008	1e4	512	ревизия карточек	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5	2026-11-26T01:13:12Z
+T9005	PLN	dryrun-pln	A9020-A9022	1e6	512	артефакт этапа	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5	2026-11-26T01:13:12Z
+T9006	PLN	dryrun-pln	A9020-A9022	1e6	512	артефакт этапа	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5	2026-11-26T01:13:12Z
+T9007	PLN	dryrun-pln	A9020-A9022	1e6	512	артефакт этапа	ready	QWR:ALV-1.0_PPV-1.0_TAV-1.0_b5	2026-11-26T01:13:12Z

@@ -1,0 +1,159 @@
+{
+ "protocol": "QWR",
+ "version": "1.0",
+ "composite": "QWR:ALV-1.0_PPV-1.0_TAV-1.0",
+ "build": 8,
+ "estimator": "qwr-bytes/1",
+ "built_at": "2026-11-26T01:15:31Z",
+ "scope": [
+  "README.md",
+  "SELFTEST.md",
+  "qwr/GUIDE.md",
+  "qwr/bot/GATE.txt",
+  "qwr/bot/dict/*.kv",
+  "qwr/bot/roles/*.txt",
+  "qwr/bot/mod/*.txt",
+  "qwr/bot/bin/*.py"
+ ],
+ "exclude": [
+  "qwr/bot/a2a",
+  "fixrealm"
+ ],
+ "limits": {
+  "gate": 3000,
+  "card": 800,
+  "role": 2500,
+  "needs": 6000,
+  "slice": 1500,
+  "decode": 500,
+  "input": 18000,
+  "input_target": 12000
+ },
+ "files": {
+  "README.md": {
+   "sha256": "e556a51c2d90dc6fa417ab7890df48721792373af9d5c7d27e7ad33839a483fb",
+   "bytes": 8811,
+   "tokens_est": 2241
+  },
+  "SELFTEST.md": {
+   "sha256": "a2b758c1ae6793c4e72de1728f69fe53206114269db6749361867cdb173d92fb",
+   "bytes": 6442,
+   "tokens_est": 1557
+  },
+  "qwr/GUIDE.md": {
+   "sha256": "5f77934bf82fa00118bb0b0a992e1d45111b363dd47485da5bcfb6b9f7e6ec06",
+   "bytes": 21501,
+   "tokens_est": 5083
+  },
+  "qwr/bot/GATE.txt": {
+   "sha256": "04ec4c2dd09676cc6a1eea1355588fb93195247a4913897f8a35cda7a91bfbf7",
+   "bytes": 10726,
+   "tokens_est": 2548
+  },
+  "qwr/bot/bin/qwr.py": {
+   "sha256": "3012c0caf9a4c8cea7415fe4f1429d379cc2bc2daf810783c775686b32efd0af",
+   "bytes": 36159,
+   "tokens_est": 9866
+  },
+  "qwr/bot/dict/common.kv": {
+   "sha256": "fc08bea1350837c99e9b9b7c5f33804d2bca3ce373cff3d3408f23d6ff2fb754",
+   "bytes": 2136,
+   "tokens_est": 501
+  },
+  "qwr/bot/dict/group.kv": {
+   "sha256": "a0d6a2e857b392a9b0e19736907fc64fa8f83dfafcf3e98e7f99b99443f38578",
+   "bytes": 1786,
+   "tokens_est": 417
+  },
+  "qwr/bot/dict/role.kv": {
+   "sha256": "36c9209e65ded619439019ee57cfeacefd80bfb60e837ba8f6c507c54444b2ee",
+   "bytes": 1404,
+   "tokens_est": 329
+  },
+  "qwr/bot/dict/subject.kv": {
+   "sha256": "3429ab5f6f3364f15ab0c0fd7ff45a27a190cb1b0229133d300061a023d5ed37",
+   "bytes": 647,
+   "tokens_est": 155
+  },
+  "qwr/bot/mod/econ.txt": {
+   "sha256": "82fa629aa8b8c841eb7bc5d6c427311c23ad05a131744cfa1d845063d0acd5ad",
+   "bytes": 2016,
+   "tokens_est": 481
+  },
+  "qwr/bot/mod/fix.txt": {
+   "sha256": "3d5a174b3a03970f5f0c2e6eedade6e21e8c191842458b119aa93fcf005b3aac",
+   "bytes": 2315,
+   "tokens_est": 550
+  },
+  "qwr/bot/mod/lazy.txt": {
+   "sha256": "40996fa10bfc820df7949e7a0b8dcf285236ca4a2f7a82c56162e21c0fb58e66",
+   "bytes": 882,
+   "tokens_est": 208
+  },
+  "qwr/bot/mod/lever.txt": {
+   "sha256": "57a7594ccd3438ddd9cd283704652c36a65fc3d7a62c8ed3d8ae9039f41b8397",
+   "bytes": 2011,
+   "tokens_est": 473
+  },
+  "qwr/bot/mod/life.txt": {
+   "sha256": "2b4518dc0cd82d67109b2b1d1cc34c6fa344b2a564b440edb9877fc32890559f",
+   "bytes": 2778,
+   "tokens_est": 655
+  },
+  "qwr/bot/mod/lock.txt": {
+   "sha256": "e2c07853768ef67d30bde1ec7670b0cb3af1d71444421b33214f4e0939c1820b",
+   "bytes": 2150,
+   "tokens_est": 514
+  },
+  "qwr/bot/mod/needs.txt": {
+   "sha256": "410ee299a3332617951b4c562a0aa56697d5135faab58898acaeece62ecb6eed",
+   "bytes": 886,
+   "tokens_est": 219
+  },
+  "qwr/bot/mod/report.txt": {
+   "sha256": "e4577fe54217124c2409b2eb7b8ee6fdae9838e613af02ec9a31cdd7f97a0a7e",
+   "bytes": 1747,
+   "tokens_est": 410
+  },
+  "qwr/bot/mod/state.txt": {
+   "sha256": "b2afe6c66748c93c93acda67c23416452df8fda17a98a1e36e7f6598e72dedc8",
+   "bytes": 2170,
+   "tokens_est": 519
+  },
+  "qwr/bot/mod/tang.txt": {
+   "sha256": "d5f282192ad15c72ceb36437cf5643961bdb43dd146e4e44eb88e72f8fca3dd0",
+   "bytes": 3005,
+   "tokens_est": 700
+  },
+  "qwr/bot/roles/CHK.txt": {
+   "sha256": "e69858a45562e659e2182fde1583b459a429c784d313089d75a0835a275d99a7",
+   "bytes": 3514,
+   "tokens_est": 849
+  },
+  "qwr/bot/roles/EDT.txt": {
+   "sha256": "c91c9389f5a43788e25b374dbbfdb1e35ecb152f1e91f749bbcad2c2ea17bff9",
+   "bytes": 2517,
+   "tokens_est": 610
+  },
+  "qwr/bot/roles/EUR.txt": {
+   "sha256": "edf59f7a6ad4c0e61ad650d2359f53583886c6bd7d18159c8d489ba3019d18d0",
+   "bytes": 3982,
+   "tokens_est": 956
+  },
+  "qwr/bot/roles/LIT.txt": {
+   "sha256": "1c2ed9197ef60abf55f66debc2c5a0d9343d42a9390b6c8232dde10b8cad0ddf",
+   "bytes": 3049,
+   "tokens_est": 740
+  },
+  "qwr/bot/roles/PLN.txt": {
+   "sha256": "fef4330e99212d5bb1fa06472131622496300ecb037fe70684ea37e1daceb9e7",
+   "bytes": 4441,
+   "tokens_est": 1066
+  },
+  "qwr/bot/roles/WRK.txt": {
+   "sha256": "a8bc065c4c37c093c46685d706954ce5f2ef75e5950293ef52d95045fead166d",
+   "bytes": 4309,
+   "tokens_est": 1031
+  }
+ }
+}
